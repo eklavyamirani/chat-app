@@ -18,6 +18,23 @@ const Chat: React.FC = () => {
             setMessages(result.data);
         };
         fetchMessages();
+
+        // Set up SSE
+        const eventSource = new EventSource('http://localhost:5240/api/chat/stream');
+        eventSource.onmessage = (event) => {
+            const [user, content] = event.data.split(": ");
+            setMessages(prevMessages => {
+                console.table(prevMessages);
+                const newResponse = { id: 445, user, content, timestamp: new Date().toISOString() };
+                console.log(newResponse);
+                return [...prevMessages, newResponse];
+            });
+            console.log(`Received sse from server ${content}`);
+        };
+
+        return () => {
+            eventSource.close();
+        };
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -29,8 +46,9 @@ const Chat: React.FC = () => {
         };
 
         const response = await axios.post<Message>('http://localhost:5240/api/chat', postMessage);
-        setMessages([...messages, response.data]);
+        setMessages(prevMessages => [...prevMessages, response.data]);
         setNewMessage("");
+        console.log(`Received response from server`);
     };
 
     return (
