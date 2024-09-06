@@ -22,9 +22,10 @@ const Chat: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const postMessage: Omit<Message, 'id' | 'timestamp'> = {
+        const postMessage: Omit<Message, 'id'> = {
             user: "User",
             content: newMessage,
+            timestamp: new Date().toISOString()
         };
 
         const response = await axios.post<Message>('http://localhost:5240/api/chat', postMessage);
