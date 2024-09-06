@@ -69,22 +69,6 @@
     dotnet run --project ChatAppBackend/ChatAppBackend.csproj
     ```
 
-## Testing
-
-### Frontend
-
-1. **Run tests**:
-    ```sh
-    npm test
-    ```
-
-### Backend
-
-1. **Run tests**:
-    ```sh
-    dotnet test
-    ```
-
 ## License
 
 This project is licensed under the MIT License.
